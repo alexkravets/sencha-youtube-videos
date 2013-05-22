@@ -5,20 +5,22 @@ Embeded youtube iframe breaks screen scrolling experience. When user touch the i
 
 ## How to use
 
-1. Embed [YouTube iFrame JavaScript API](https://developers.google.com/youtube/iframe_api_reference) with a following code after app initialized:
+Embed [YouTube iFrame JavaScript API](https://developers.google.com/youtube/iframe_api_reference) with a following code after app initialized:
 
 ```
 var tag = document.createElement('script');
 tag.src = "https://www.youtube.com/iframe_api";
+
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
 window.onYouTubeIframeAPIReady = function () {
     console.log('youtube api loaded');
     window.youtube_iframe_api_ready = true;
 }
 ```
 
-2. Put the video component in your layout using template:
+Put the video component in your layout using template:
 
 ```
 {
@@ -30,7 +32,11 @@ window.onYouTubeIframeAPIReady = function () {
 }
 ```
 
-Parameters: ```thumb``` is used to set the thumbnail for the video, if not set default YouTube thumbnail is used. ```youtube_id``` - YouTube video id which is used in videos URL.
+Parameters:
+
+```thumb``` is used to set the thumbnail for the video, if not set default YouTube thumbnail is used.
+
+```youtube_id``` - YouTube video id which is used in videos URL.
 
 
 ## Details

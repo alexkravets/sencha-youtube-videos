@@ -1,4 +1,4 @@
-Ext.define('HelloHartoApp.component.Youtube', {
+Ext.define('AppName.component.Youtube', {
     extend: 'Ext.Img',
     xtype: ['youtube'],
 

@@ -5,24 +5,52 @@ Embeded youtube iframe breaks screen scrolling experience. When user touch the i
 
 ## How to use
 
-Embed [YouTube iFrame JavaScript API](https://developers.google.com/youtube/iframe_api_reference) with a following code after app initialized:
+Put the ```Youtube.js``` file from the **src** folder into ```app/component``` folder of the application. Fix the namespace of the component in the first line of ```Youtube.js``` by renaming ```AppName``` to the real name.
+
+Add ```jquery``` dependency (should be removed in future versions) by adding following code in ```app.json``` file into ```js``` array:
 
 ```
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-window.onYouTubeIframeAPIReady = function () {
-    console.log('youtube api loaded');
-    window.youtube_iframe_api_ready = true;
-}
+{
+    "path": "jquery.js",
+    "update": "delta"
+},
 ```
 
-```window.youtube_iframe_api_ready``` is used to make sure API has been successfully loaded.
+Embed [YouTube iFrame JavaScript API](https://developers.google.com/youtube/iframe_api_reference) by adding the following function to the ```app.js``` and call ```this.addYoutubeApi()``` in ```launch``` function:
 
-Put the video component in your layout using template:
+```
+launch: function() {
+    // Add YT JS API
+    this.addYutubeApi();
+
+    // Destroy the #appLoadingIndicator element
+    Ext.fly('appLoadingIndicator').destroy();
+
+    // Initialize the main view
+    Ext.Viewport.add(Ext.create('YtVideosDemo.view.Main'));
+},
+
+addYoutubeApi: function() {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    window.onYouTubeIframeAPIReady = function () {
+        console.log('youtube api loaded');
+        window.youtube_iframe_api_ready = true;
+    }
+},
+```
+
+```window.youtube_iframe_api_ready``` is used by component to make sure API has been successfully loaded.
+
+Add reference to the video component in the view where videos are going to be used, replace ```AppName``` with a real name:
+
+```requires: [ 'AppName.component.Youtube' ]```
+
+Put the video component in your views layout using template:
 
 ```
 {
@@ -40,6 +68,41 @@ Parameters:
 
 ```youtube_id``` - YouTube video id which is used in videos URL.
 
+Add styles for the play button to ```resources/sass/app.scss```:
+
+```
+.x-youtube                            {
+  &:after                             { content: '';
+                                        display: block;
+                                        position: absolute;
+                                        width:100%;
+                                        height:100%;
+                                        background: url('../images/youtube-play@2x.png') no-repeat center;
+                                        background-size: 58px 58px;
+  }
+
+  &.x-youtube-overlay                 {
+    &:after                           { background-color: rgba(0,0,0,0.5);
+    }
+  }
+
+  &.x-youtube-loading                 {
+    &:after                           { background-image: none;
+    }
+  }
+
+  iframe                              { border: 0;
+  }
+}
+```
+
+After all of these finished you can build sencha project and wrap it with cordova. Please reference demo project for example.
+
+
+## Demo
+
+In ```demo``` folder two projects are available ```sencha``` (2.2) and ```cordova```(2.7). Sencha app is build for production and copied to ```demo/cordova/www``` folder. So to test things out launch the cordova project and run app in simulator.
+
 
 ## Details
 
@@ -55,7 +118,8 @@ This component uses [YouTube iFrame JavaScript API](https://developers.google.co
 ## TODO
 
 1. Remove ```jQuery``` dependency for the iframe resizing function.
-2. Add reference and code to to support Android YT API.
+2. Add reference and code to support Android YT API.
+3. Make component namespace independent.
 
 --
 [Alexander Kravets](http://www.akravets.com) @ [Slate](http://www.slatestudio.com), May 2013

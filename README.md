@@ -1,4 +1,4 @@
-# Sencha Youtube Videos
+# Sencha Youtube Videos (0.1)
 
 Embeded youtube iframe breaks screen scrolling experience. When user touch the iframe area trying to scroll nothing happens, cause iframe intercepts touch event and sencha scrolling engine is not able to handle touch event.
 
@@ -19,6 +19,8 @@ window.onYouTubeIframeAPIReady = function () {
     window.youtube_iframe_api_ready = true;
 }
 ```
+
+```window.youtube_iframe_api_ready``` is used to make sure API has been successfully loaded.
 
 Put the video component in your layout using template:
 
@@ -48,6 +50,12 @@ This component uses [YouTube iFrame JavaScript API](https://developers.google.co
 2. When user taps on thumb, iframe is added to DOM, shown and video starts playing. To make this autoplay feature possible we use [YouTube iFrame JavaScript API](https://developers.google.com/youtube/iframe_api_reference).
 
 3. After video ends/stops/paused iframe is resized to the 10px box and hidden under play button overlay. This part is important and tricky, I've tried to hide, delete iframe and some other options, but ended up with resizing. It allows to continue playing after pause and have a few youtube iframes on the same page with no issue. Video can be resized only once, cause after second play tap player goes into fullscreen mode and user don't see the iframe itself.
+
+
+## TODO
+
+1. Remove ```jQuery``` dependency for the iframe resizing function.
+2. Add reference and code to to support Android YT API.
 
 --
 [Alexander Kravets](http://www.akravets.com) @ [Slate](http://www.slatestudio.com), May 2013

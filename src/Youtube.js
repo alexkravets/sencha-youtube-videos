@@ -1,4 +1,4 @@
-Ext.define('AppName.component.Youtube', {
+Ext.define('App.component.Youtube', {
     extend: 'Ext.Img',
     xtype: ['youtube'],
 
@@ -46,16 +46,16 @@ Ext.define('AppName.component.Youtube', {
     },
 
     getImageWidth: function() {
-        return ($) ? $(this.element.dom).width() : this.element.dom.offsetWidth;
+        return this.element.getWidth() || this.element.dom.offsetWidth;
     },
 
     getImageHeight: function() {
-        return ($) ? $(this.element.dom).height() : this.element.dom.offsetHeight;
+        return this.element.getHeight() || this.element.dom.offsetHeight;
     },
 
     afterLoad: function (argument) {
         if (this.getOverlay()) {
-            $(this.element.dom).addClass('x-youtube-overlay');
+            this.element.addCls('x-youtube-overlay');
         }
 
         var width  = this.getImageWidth(),
@@ -66,7 +66,7 @@ Ext.define('AppName.component.Youtube', {
             this.element.dom.style.backgroundPosition = 'center center';
         } else {
             this.element.dom.style.backgroundSize = width + 'px ' + height + 'px';
-        }        
+        }
     },
 
     playerTapped: function() {
@@ -78,7 +78,7 @@ Ext.define('AppName.component.Youtube', {
                    the iframe play button, fullscreen player brings up, but do
                    not start playing. User should double tap, the play button
                    then video starts to play.
-                */                
+                */
                 this.player.playVideo();
             } else {
                 this.initVideo();
@@ -89,7 +89,7 @@ Ext.define('AppName.component.Youtube', {
     },
 
     initVideo: function() {
-        $(this.element.dom).addClass('x-youtube-loading');
+        this.element.addCls('x-youtube-loading');
 
         me = this;
 
@@ -105,31 +105,26 @@ Ext.define('AppName.component.Youtube', {
             height:  me.getImageHeight(),
             videoId: me.getYoutube_id(),
             events: {
-                'onReady': function (event) {
-                    me.youtube_iframe = $(me.element.dom).find('iframe');
+                onReady: function (event) {
+                    me.youtube_iframe = me.element.dom.querySelector('iframe');
 
                     event.target.playVideo();
                 },
-                'onStateChange': function(event) {
+                onStateChange: function(event) {
                     me.onStateChange(event);
-                } 
+                }
             }
         });
     },
 
     onStateChange: function(e) {
-        if (e.data == YT.PlayerState.STOPED || e.data == YT.PlayerState.PAUSED) {
-            
-            // Hiding iframe so it doesn't break the scrolling
+        if (e.data == YT.PlayerState.STOPPED || e.data == YT.PlayerState.PAUSED) {
 
-            $(this.element.dom).removeClass('x-youtube-loading');
-            this.youtube_iframe.css({
-                width:  '10px',
-                height: '10px',
-                'margin-left': me.getImageWidth() /2 - 5,
-                'margin-top':  me.getImageHeight() /2 - 5,
-                position: 'absolute'
-            });
+            // Hiding iframe so it doesn't break the scrolling
+            this.displayVarHolder = this.youtube_iframe.style.display;
+            this.youtube_iframe.style.display = 'none';
+        } else {
+            this.youtube_iframe.style.display = this.displayVarHolder;
         }
     }
 });

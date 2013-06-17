@@ -1,4 +1,4 @@
-# Sencha Youtube Videos (0.1)
+# Sencha Youtube Videos (0.2)
 
 Embeded youtube iframe breaks screen scrolling experience. When user touch the iframe area trying to scroll nothing happens, cause iframe intercepts touch event and sencha scrolling engine is not able to handle touch event.
 
@@ -117,9 +117,13 @@ This component uses [YouTube iFrame JavaScript API](https://developers.google.co
 
 ## TODO
 
-1. Remove ```jQuery``` dependency for the iframe resizing function.
-2. Add reference and code to support Android YT API.
-3. Make component namespace independent.
+1. Add reference and code to support Android YT API.
+2. Make component namespace independent.
+
+## Contributors
+
+1. [Alexander Kravets](http://www.akravets.com)
+2. [Quinten Van Kerrebroeck](https://github.com/quintenvk)
 
 --
 [Alexander Kravets](http://www.akravets.com) @ [Slate](http://www.slatestudio.com), May 2013
